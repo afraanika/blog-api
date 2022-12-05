@@ -1,0 +1,16 @@
+{
+  "name": "blog-api",
+  "version": "1.0.0",
+  "description": "A Simple Blog API using TypeScript, Node JS, Express & MySQL",
+  "main": "app.ts",
+  "scripts": {
+    "start": "tsc & nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Afra Anika (afraanikaa@gmail.com)",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "sequelize": "^6.26.0"
+  }
+}
