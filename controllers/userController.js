@@ -8,14 +8,11 @@ const getAllUsers = async (req, res) => {
 const getUserById = async (req, res) => {
     const user = await userService.getUserById(req.params.id);
     if(_.isEmpty(user))
-        res.send("User Not Found");    
-    res.send(user);
+        res.send("User Not Found");
+    else    
+        res.send(user);
 };
 
-const addUser = async(req, res) => {
-    const response = await userService.addUser(req.body);
-    res.status(response.statusCode).send(response.message);
-};
 
 const updateUser = async (req, res) => {  
     const user = await userService.updateUser(req.params.id, req.body);
@@ -33,4 +30,4 @@ const deleteUser = async (req, res) => {
         res.send("User Not Found");
 };
 
-module.exports = { getAllUsers, getUserById, addUser, updateUser, deleteUser };
+module.exports = { getAllUsers, getUserById, updateUser, deleteUser };
