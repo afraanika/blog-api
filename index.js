@@ -1,6 +1,7 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const db = require('./models/index');
-const dbConnection = require('./models/index');
+const userRoutes = require('./routes/userRoutes');
 
 const PORT = 3500;
 const app = express();
@@ -9,12 +10,16 @@ const app = express();
   await db.sequelize.sync();
 })();
 
+app.use(bodyParser.json());
+// app.use(express.urlencoded({ extended: true }));
+
+app.use('/users', userRoutes);
+
 app.get('/', (req, res) => {
-  console.log(typeof (res));
-  console.log(typeof (req));
-  res.end("Hello World");
+  res.end("Home Page");
 });
 
+ 
 app.listen(PORT, () => {
   console.log(`Server is listening to the PORT ${PORT}`);
 });
