@@ -9,25 +9,6 @@ const getUserById = async (id) => {
     const user = await User.findByPk(id);
     return user;
 }
-const addUser = (userInfo) => {
-    if(!userInfo.username || !userInfo.contactNo || !userInfo.email || !userInfo.password) 
-        return {};
-    const response = User.create(userInfo)
-                                    .then(() => {
-                                        return {
-                                            statusCode: 201,
-                                            message: "User Created"
-                                        };
-                                    })
-                                    .catch(err => {
-                                        return {
-                                            statusCode: 400,
-                                            message: err.errors
-                                        };
-                                    });
-    return response;
-       
-};
 
 const updateUser = async (id, userInfo) => {
     await User.update(userInfo, {
@@ -56,4 +37,4 @@ const deleteUser = async (id) => {
     return user;
 }
 
-module.exports = { getAllUsers, getUserById, addUser, updateUser, deleteUser };
+module.exports = { getAllUsers, getUserById, updateUser, deleteUser };
