@@ -1,40 +1,85 @@
+const _ = require('lodash');
+
 const { models: { User } } = require('../models');
+const { verifyToken } = require('../utils/jwtUtil');
 
 const getAllUsers = async () => {
     const users = await User.findAll();
-    return users;
+    return {
+        statusCode: 401,
+        message: users
+    };
 };
 
 const getUserById = async (id) => {
     const user = await User.findByPk(id);
-    return user;
+    if(_.isEmpty(user))
+        return {
+            statusCode: 404,
+            message: "User Not Found"
+        }
+    return {
+        statusCode: 200,
+        message: user
+    };
 }
 
-const updateUser = async (id, userInfo) => {
-    await User.update(userInfo, {
+const updateUser = async (headers, id, userInfo) => {
+    const currentUser = verifyToken(headers);
+    if(currentUser == undefined) return currentUser;
+    const currentUserInfo = await User.findOne({
+        where: {
+            email: currentUser
+        }
+    });
+    if(currentUserInfo.id != id)
+        return {
+            statusCode: 401,
+            message: "Authorization Failed"
+        };
+    const user = await User.update(userInfo, {
         where: {
             id: id
         }
     });
-    const user = await User.findOne({ 
-        where: { 
-            id: id, 
-            username: userInfo.username,  
-            contactNo: userInfo.contactNo, 
-            email: userInfo.email,
-            password: userInfo.password
-        } 
-    });
-    return user;
+    if(user[0])
+        return {
+            statusCode: 200,
+            message: "User Updated"
+        };
+    return {
+        statusCode: 404,
+        message: "User Not Found"
+    };
 };
 
-const deleteUser = async (id) => {
+const deleteUser = async (headers, id) => {
+    const currentUser = verifyToken(headers);
+    if(currentUser == undefined) return currentUser;
+    const currentUserInfo = await User.findOne({
+        where: {
+            email: currentUser
+        }
+    });
+    if(currentUserInfo.id != id)
+        return {
+            statusCode: 401,
+            message: "Authorization Failed"
+        };
     const user = await User.destroy( {
         where: {
             id: id
         }
     });
-    return user;
+    if(user)
+        return {
+            statusCode: 204,
+            message: "User Deleted"
+        };
+    return {
+        statusCode: 404,
+        message: "User Not Found"
+    };
 }
 
 module.exports = { getAllUsers, getUserById, updateUser, deleteUser };
