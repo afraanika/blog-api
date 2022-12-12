@@ -32,7 +32,7 @@ const updateUser = async (headers, id, userInfo) => {
             email: currentUser
         }
     });
-    if(currentUserInfo.id != id)
+    if(currentUserInfo == null || currentUserInfo.id != id)
         return {
             statusCode: 401,
             message: "Authorization Failed"
@@ -55,13 +55,13 @@ const updateUser = async (headers, id, userInfo) => {
 
 const deleteUser = async (headers, id) => {
     const currentUser = verifyToken(headers);
-    if(currentUser == undefined) return currentUser;
+    if(currentUser == undefined || currentUser == null) return currentUser;
     const currentUserInfo = await User.findOne({
         where: {
             email: currentUser
         }
     });
-    if(currentUserInfo.id != id)
+    if(currentUserInfo == null || currentUserInfo.id != id)
         return {
             statusCode: 401,
             message: "Authorization Failed"

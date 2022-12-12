@@ -3,8 +3,9 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('./models/index');
-const userRoutes = require('./routes/userRoutes');
-const authRoutes = require('./routes/authRoutes');
+const authRoute = require('./routes/authRoute');
+const userRoute = require('./routes/userRoute');
+const blogRoute = require('./routes/blogRoute');
 
 const PORT = process.env.PORT;
 
@@ -15,8 +16,9 @@ const app = express();
 })();
 
 app.use(bodyParser.json());
-app.use('/', authRoutes);
-app.use('/users', userRoutes);
+app.use('/', authRoute);
+app.use('/users', userRoute);
+app.use('/blogs', blogRoute);
  
 app.listen(PORT, () => {
   console.log(`Server is listening to the PORT ${PORT}`);
