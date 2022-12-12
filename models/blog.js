@@ -1,13 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
 
-    const User = sequelize.define('user', 
+    const Blog = sequelize.define('blog', 
     {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
-        username: { 
+        title: {
             type: DataTypes.STRING,
             allowNull: false,
             msg: "Must not be null/empty",
@@ -15,40 +15,30 @@ module.exports = (sequelize, DataTypes) => {
                 notEmpty: true
             }
         },
-        contactNo: { 
-            type: DataTypes.STRING,
+        description: {
+            type: DataTypes.TEXT,
             allowNull: false,
             msg: "Must not be null/empty",
             validate: {
                 notEmpty: true
             }
         },
-        email: { 
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-            notEmpty: true,
-            msg: "Must be unique and not null/empty",
-            validate: {
-                isEmail: true, 
-            }
-        },
-        password:{ 
+        authorEmail: {
             type: DataTypes.STRING,
             allowNull: false,
             msg: "Must not be null/empty",
             validate: {
-                notEmpty: true,
-                min: 8
+                notEmpty: true
             }
         }
-    });
+    }, 
+    {});
 
-    User.associate = models => {
-        User.hasMany(models.Blog, {
-          foreignKey: 'creatorId'
+    Blog.associate = (models) => {
+        Blog.belongsTo(models.User, {
+          foreignKey: 'authorId'
         });
     }
 
-    return User;
+    return Blog;
 };

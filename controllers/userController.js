@@ -18,6 +18,7 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     const response = await userService.deleteUser(req.headers, req.params.id);
+    if(response == undefined) res.status(400).send("Authorization Header Needed");
     res.status(response.statusCode).send(response.message);
     
 };
