@@ -4,7 +4,7 @@
   "description": "A Simple Blog API using TypeScript, Node JS, Express & MySQL",
   "main": "app.ts",
   "scripts": {
-    "start": "tsc & nodemon app.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Afra Anika (afraanikaa@gmail.com)",

@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-const { models: { User } } = require('../models');
+const { models: { User, Blog } } = require('../models');
 const { verifyToken } = require('../utils/jwtUtil');
 
 const getAllUsers = async () => {
@@ -66,11 +66,18 @@ const deleteUser = async (headers, id) => {
             statusCode: 401,
             message: "Authorization Failed"
         };
-    const user = await User.destroy( {
+    
+    const user = await Blog.destroy({
         where: {
-            id: id
+            authorEmail: currentUser
         }
-    });
+    }).then(async () => {
+        return await User.destroy( {
+            where: {
+                id: id
+            }
+        });
+    })  
     if(user)
         return {
             statusCode: 204,
